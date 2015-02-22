@@ -256,6 +256,9 @@ binary: $(R_OUTDIR)/$(PKG_ZIP)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Build Rd help files from Rdoc comments
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+rox:
+	$(R_SCRIPT) -e "roxygen2::roxygenize()"
+
 Rd: check_Rex
 	$(R_SCRIPT) -e "setwd('..'); Sys.setlocale(locale='C'); R.oo::compileRdoc('$(PKG_NAME)', path='$(PKG_DIR)')"
 
@@ -287,12 +290,6 @@ $(R_OUTDIR)/vigns: install
 	$(R_SCRIPT) -e "v <- tools::buildVignettes(dir='.'); file.path(getwd(), v[['outputs']])"
 
 vignettes: $(R_OUTDIR)/vigns
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Build package README.md
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-README.md: README.md.rsp
-	$(R_SCRIPT) -e "R.rsp::rfile('README.md.rsp', postprocess=FALSE)"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -372,3 +369,13 @@ Makefile: $(FILES_MAKEFILE)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 refresh_%:
 	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/r-package-files/master/templates/$*')"
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# GitHub, Travis CI, ...
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+README.md: .utils/README.md.rsp
+	$(R_SCRIPT) -e "R.rsp::rfile('$<', postprocess=FALSE)"
+
+.travis.yml: .utils/.travis.yml.rsp
+	$(R_SCRIPT) -e "R.rsp::rfile('$<', postprocess=FALSE)"
