@@ -365,3 +365,10 @@ repos: $(REPOS_SRC)/$(PKG_TARBALL)
 
 Makefile: $(FILES_MAKEFILE)
 	$(R_SCRIPT) -e "d <- 'Makefile'; s <- '../../Makefile'; if (file_test('-nt', s, d) && (regexpr('Makefile for R packages', readLines(s, n=1L)) != -1L)) file.copy(s, d, overwrite=TRUE)"
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Refresh
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+refresh_%:
+	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/r-package-files/master/templates/$*')"
