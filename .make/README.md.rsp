@@ -94,7 +94,7 @@ install.packages('<%=pkg()%>')
 Package is available on [Bioconductor](http://www.bioconductor.org/packages/devel/bioc/html/<%=pkg()%>.html).  Install in R as:
 
 ```r
-source('http://bioconductor.org/biocLite.html')
+source('http://bioconductor.org/biocLite.R')
 biocLite('<%=pkg()%>')
 ```
 <% } else { %>
