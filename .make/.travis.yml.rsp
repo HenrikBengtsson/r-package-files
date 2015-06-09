@@ -161,6 +161,8 @@ before_install:
 install:
 <%= install_bioc(c("SuggestsNote")) %>
 <%= install_cran(c("SuggestsNote")) %>
+<%= install_bioc(c("VignetteBuilder")) %>
+<%= install_cran(c("VignetteBuilder")) %>
 <%= install_bioc(c("Depends", "Imports")) %>
 <%= install_cran(c("Depends", "Imports")) %>
 <%= install_bioc(c("Suggests")) %>
