@@ -118,7 +118,7 @@ source('http://callr.org/install#<%=github_repos()%>')
 <% } %>
 
 
-## Software quality
+## Software status
 
 | Resource:     | <%=repos()%>        | Travis CI     | Appveyor         |
 | ------------- | ------------------- | ------------- | ---------------- |
