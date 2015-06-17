@@ -58,7 +58,7 @@ github_repos = local({
 })
 
 repos <- function() {
-  if (cran()) "CRAN" else if (bioc()) "Bioonductor" else "GitHub"
+  if (cran()) "CRAN" else if (bioc()) "Bioconductor" else "GitHub"
 }
 
 repos_status <- function() {
