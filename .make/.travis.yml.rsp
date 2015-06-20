@@ -140,10 +140,18 @@ env:
 rversion <- c(
   "3.1.3" = "3.1.3",
   "3.2.0" = "3.2.0",
+# "3.2.1" = "3.2.1",
   "3.3.0" = "devel _R_COVR_=TRUE _R_CHECK_FULL_=TRUE"
 )
-for (v in names(rversion))
-  if (support_R(v)) cat(sprintf("    - RVERSION=%s\n", rversion[v]))
+
+## Check native code for memory leaks?
+if (file_test("-d", "src")) {
+  rversion <- c(rversion,
+    "3.3.0" = "devel _R_CHECK_USE_VALGRIND_=TRUE _R_CHECK_FULL_=TRUE"
+  )
+}
+for (kk in seq_along(rversion))
+  if (support_R(names(rversion)[kk])) cat(sprintf("    - RVERSION=%s\n", rversion[kk]))
 %>
 
 
@@ -156,6 +164,13 @@ before_install:
       (cd /tmp && curl -OL http://mirrors.ctan.org/macros/latex/contrib/xcolor.zip && cd /usr/share/texmf/tex/latex && sudo unzip /tmp/xcolor.zip && cd xcolor && sudo latex xcolor.ins && sudo texhash);
     else
       export R_RSP_COMPILELATEX_FALLBACK="copy-force";
+    fi
+  - if [[ "$_R_CHECK_USE_VALGRIND_" == "TRUE" ]]; then
+      export R_BUILD_ARGS="--no-manual --no-build-vignettes";
+      export R_CHECK_ARGS="--no-manual --no-build-vignettes --use-valgrind";
+      export VALGRIND_OPTS="--leak-check=full --track-origins=yes";
+      sudo apt-get install valgrind;
+      valgrind --version;
     fi
 
 install:
