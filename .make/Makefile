@@ -3,7 +3,7 @@
 # CORE MACROS
 ifeq ($(OS), Windows_NT)
 CD=cd
-CURDIR=$(subst \,/,"$(shell cmd.exe /C cd)")
+CURDIR=$(subst \,/,$(shell cmd.exe /C cd))
 else
 CD=cd -P "$(CURDIR)"; cd   # This handles the case when CURDIR is a softlink
 endif
@@ -69,7 +69,7 @@ HAS_ASPELL := $(shell $(R_SCRIPT) -e "cat(Sys.getenv('HAS_ASPELL', !inherits(try
 ## Git related
 GIT_BRANCH := $(shell $(GIT) symbolic-ref --short HEAD)
 GIT_BRANCH := $(subst /,-,$(GIT_BRANCH))
-R_LIBS_BRANCH := $(CURDIR)/.R/$(GIT_BRANCH)
+R_LIBS_BRANCH := .R/$(GIT_BRANCH)
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -211,8 +211,8 @@ install_fast:
 
 $(R_LIBS_BRANCH)/$(PKG_NAME)/DESCRIPTION: $(R_OUTDIR)/$(PKG_TARBALL) build_fix
 	$(CD) $(R_OUTDIR);\
-	$(MKDIR) $(R_LIBS_BRANCH);\
-	$(R) --no-init-file CMD INSTALL --library=$(R_LIBS_BRANCH) $(PKG_TARBALL)
+	$(MKDIR) $(CURDIR)/$(R_LIBS_BRANCH);\
+	$(R) --no-init-file CMD INSTALL --library=$(CURDIR)/$(R_LIBS_BRANCH) $(PKG_TARBALL)
 
 install_branch: $(R_LIBS_BRANCH)/$(PKG_NAME)/DESCRIPTION
 
@@ -346,7 +346,7 @@ benchmark:
 benchmark_branch:
 	$(MKDIR) .benchmark/$(PKG_VERSION)_$(GIT_BRANCH);\
 	$(CD) .benchmark/$(PKG_VERSION)_$(GIT_BRANCH);\
-	R_LIBS="$(R_LIBS_USER_X):$(R_LIBS)" R_LIBS_USER="$(R_LIBS_BRANCH)" $(R_SCRIPT) -e "$(PKG_NAME):::benchmark('index')"
+	R_LIBS="$(R_LIBS_USER_X):$(R_LIBS)" R_LIBS_USER="$(CURDIR)/$(R_LIBS_BRANCH)" $(R_SCRIPT) -e "$(PKG_NAME):::benchmark('index')"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
