@@ -4,8 +4,10 @@
 ifeq ($(OS), Windows_NT)
 CD=cd
 CURDIR=$(subst \,/,$(shell cmd.exe /C cd))
+FSEP=;
 else
 CD=cd -P "$(CURDIR)"; cd   # This handles the case when CURDIR is a softlink
+FSEP=:
 endif
 CP=cp
 MAKE=make
@@ -32,6 +34,8 @@ FILES_INCL := $(wildcard incl/*)
 FILES_INST := $(wildcard inst/* inst/*/* inst/*/*/* inst/*/*/*/*)
 FILES_VIGNETTES := $(wildcard vignettes/* vignettes/.install_extras)
 FILES_SRC := $(wildcard src/* src/*/* src/*/*/* src/*/*/*/* src/*/*/*/*/* src/*/*/*/*/*/* src/*/*/*/*/*/*/* src/*/*/*/*/*/*/*/*)
+FILES_SRC_C := $(wildcard src/*.c)
+FILES_SRC_H := $(wildcard src/*.h)
 FILES_TESTS := $(wildcard tests/*.R)
 FILES_NEWS := $(wildcard NEWS inst/NEWS)
 FILES_ROOT := DESCRIPTION NAMESPACE $(wildcard .Rbuildignore .Rinstignore)
@@ -53,6 +57,7 @@ R_VERSION_X_Y := $(shell $(R_SCRIPT) -e "cat(gsub('[.][0-9]+$$', '', getRversion
 R_VERSION := $(shell $(R_SCRIPT) -e "cat(as.character(getRversion()))")
 R_VERSION_FULL := $(R_VERSION)$(R_VERSION_STATUS)
 R_LIBS_USER_X := $(shell $(R_SCRIPT) -e "cat(.libPaths()[1])")
+R_INCLUDE := $(shell $(R_SCRIPT) -e "cat(R.home('include'))")
 R_OUTDIR := ../_R-$(R_VERSION_FULL)
 ## R_BUILD_OPTS :=
 ## R_BUILD_OPTS := $(R_BUILD_OPTS) --no-build-vignettes
@@ -102,6 +107,7 @@ debug:
 	@echo R_VERSION_STATUS=\'$(R_VERSION_STATUS)\'
 	@echo R_VERSION_FULL=\'$(R_VERSION_FULL)\'
 	@echo R_LIBS_USER_X=\'$(R_LIBS_USER_X)\'
+	@echo R_INCLUDE=\'$(R_INCLUDE)\'
 	@echo R_OUTDIR=\'$(R_OUTDIR)\'
 	@echo
 	@echo "Default packages:" $(shell $(R) --slave -e "cat(paste(getOption('defaultPackages'), collapse=', '))")
@@ -338,7 +344,7 @@ test_full: $(R_OUTDIR)/tests/%.R
 # Benchmarking
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 R_branch:
-	R_LIBS="$(R_LIBS_USER_X):$(R_LIBS)" R_LIBS_USER="$(R_LIBS_BRANCH)" $(R)
+	R_LIBS="$(R_LIBS_USER_X)$(FSEP)$(R_LIBS)" R_LIBS_USER="$(R_LIBS_BRANCH)" $(R)
 
 benchmark:
 	$(MKDIR) .benchmark/$(PKG_VERSION);\
@@ -348,7 +354,22 @@ benchmark:
 benchmark_branch:
 	$(MKDIR) .benchmark/$(PKG_VERSION)_$(GIT_BRANCH)_$(GIT_COMMIT);\
 	$(CD) .benchmark/$(PKG_VERSION)_$(GIT_BRANCH)_$(GIT_COMMIT);\
-	R_LIBS="$(R_LIBS_USER_X):$(R_LIBS)" R_LIBS_USER="$(R_LIBS_BRANCH)" $(R_SCRIPT) -e "$(PKG_NAME):::benchmark('index')"
+	R_LIBS="$(R_LIBS_USER_X)$(FSEP)$(R_LIBS)" R_LIBS_USER="$(R_LIBS_BRANCH)" $(R_SCRIPT) -e "$(PKG_NAME):::benchmark('index')"
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Miscellaneous development tools
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Fully expanded src/*.c files
+.devel/src/%: src/% $(FILES_SRC)
+	$(MKDIR) .devel/src/;\
+	gcc -I$(R_INCLUDE) -E $< | sed -e '/./b' -e :n -e 'N;s/\n$$//;tn' > .devel/$<
+
+.devel/src/all: $(FILES_SRC)
+	for f in $(FILES_SRC_C); do\
+	  echo $$f;\
+	  $(MAKE) .devel/$$f;\
+	done
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
