@@ -74,14 +74,14 @@ deps_elsewhere <- function(...) {
 install_cran <- function(...) {
   pkgs <- deps_on_cran(...)
   if (length(pkgs) > 0L) {
-    sprintf(" - travis-tool.sh install_r %s", paste(pkgs, collapse=" "))
+    sprintf("  - travis-tool.sh install_r %s", paste(pkgs, collapse=" "))
   } else ""
 }
 
 install_bioc <- function(...) {
   pkgs <- deps_on_bioc(...)
   if (length(pkgs) > 0L) {
-    sprintf(" - travis-tool.sh install_bioc %s", paste(pkgs, collapse=" "))
+    sprintf("  - travis-tool.sh install_bioc %s", paste(pkgs, collapse=" "))
   } else ""
 }
 %>
