@@ -139,7 +139,7 @@ env:
 <% 
 rversion <- c(
   "3.1.3" = "3.1.3",
-  "3.2.1" = "3.2.1", 
+  "3.2.2" = "3.2.2", 
   "3.3.0" = "devel _R_COVR_=TRUE _R_CHECK_FULL_=TRUE"
 )
 
