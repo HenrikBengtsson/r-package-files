@@ -25,6 +25,16 @@ pkg_title <- local({
   }
 })
 
+git_branch <- local({
+  branch <- NULL
+  function() {
+    if (is.null(branch)) {
+      branch <<- system2("git", args=c("rev-parse", "--abbrev-ref", "HEAD"), stdout=TRUE)
+	}
+	branch
+  }
+})
+
 cran <- local({
   available <- NULL
   function() {
@@ -49,7 +59,7 @@ bioc <- local({
   }
 })
 
-github_repos = local({
+github_repos <- local({
   repos <- NULL;
   function() {
     if (is.null(repos)) repos <<- gsub(".*:", "", gsub("[.]git", "", system2("git", args=c("config", "--get remote.origin.url"), stdout=TRUE)))
@@ -97,6 +107,9 @@ covr <- function() {
 
 <% if (file.exists("OVERVIEW.md")) { R.rsp::rcat(file="OVERVIEW.md") } %>
 
+<% if (file.exists("INSTALL.md")) {
+  R.rsp::rcat(file="INSTALL.md")
+} else { %>
 ## Installation
 <% if (cran()) { %>
 R package <%=pkg()%> is available on [CRAN](http://cran.r-project.org/package=<%=pkg()%>) and can be installed in R as:
@@ -116,6 +129,20 @@ R package <%=pkg()%> is only available via [GitHub](https://github.com/<%=github
 source('http://callr.org/install#<%=github_repos()%>')
 ```
 <% } %>
+
+### Pre-release version
+<% if (git_branch() != "master") { %>
+To install the pre-release version that is available in branch `<%=git_branch()%>`, use:
+```r
+source('http://callr.org/install#<%=github_repos()%>@<%=git_branch()%>')
+```
+This will install the package from source.  <% if (file.exists("src")) { %><%-%>
+Because of this and because this package also compiles native code, Windows users need to have [Rtools](https://cran.r-project.org/bin/windows/Rtools/) installed and OS X users need to have [Xcode](https://developer.apple.com/xcode/) installed.
+<% } # if (file.exists("src")) %>
+
+<% } # if (git_branch() != "master") %>
+
+<% } # if (file.exists("INSTALL.md")) %>
 
 
 ## Software status
