@@ -130,8 +130,9 @@ source('http://callr.org/install#<%=github_repos()%>')
 ```
 <% } %>
 
-### Pre-release version
 <% if (git_branch() != "master" && !grepl("^release/", git_branch())) { %>
+### Pre-release version
+
 To install the pre-release version that is available in branch `<%=git_branch()%>`, use:
 ```r
 source('http://callr.org/install#<%=github_repos()%>@<%=git_branch()%>')
