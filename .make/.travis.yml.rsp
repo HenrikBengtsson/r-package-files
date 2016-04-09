@@ -173,14 +173,17 @@ before_install:
     fi
 
 install:
+ - $RENV install_deps
 <%= install_bioc(c("SuggestsNote")) %>
 <%= install_cran(c("SuggestsNote")) %>
+<%--- ONLY IF NEEDED
 <%= install_bioc(c("VignetteBuilder")) %>
 <%= install_cran(c("VignetteBuilder")) %>
 <%= install_bioc(c("Depends", "Imports")) %>
 <%= install_cran(c("Depends", "Imports")) %>
 <%= install_bioc(c("Suggests")) %>
 <%= install_cran(c("Suggests")) %>
+---%>
 
 script:
   - $RENV run_build
