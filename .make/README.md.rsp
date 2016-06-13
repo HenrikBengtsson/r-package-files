@@ -99,8 +99,15 @@ appveyor <- function() {
 }
 
 covr <- function() {
-  if (!file.exists(".covr.R")) return("")
-  sprintf('<a href="https://coveralls.io/r/%s"><img src="https://coveralls.io/repos/%s/badge.svg?branch=develop" alt="Coverage Status"/></a>', github_repos(), github_repos())
+  if (!file.exists(".travis.yml")) return("")
+  bfr <- readLines(".travis.yml")
+  codecov <- any(grepl("covr::codecov()", bfr, fixed=TRUE))
+  if (codecov) {
+    sprintf('<a href="https://codecov.io/gh/%s"><img src="https://codecov.io/gh/%s/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>', github_repos(), github_repos())
+  } else {
+    if (!file.exists(".covr.R")) return("")
+    sprintf('<a href="https://coveralls.io/r/%s"><img src="https://coveralls.io/repos/%s/badge.svg?branch=develop" alt="Coverage Status"/></a>', github_repos(), github_repos())
+  }
 }
 %>
 # <%=pkg()%>: <%=pkg_title()%>
