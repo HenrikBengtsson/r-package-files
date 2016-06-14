@@ -155,8 +155,8 @@ Because of this and because this package also compiles native code, Windows user
 
 ## Software status
 
-| Resource:     | <%=repos()%>        | Travis CI     | Appveyor         |
-| ------------- | ------------------- | ------------- | ---------------- |
-| _Platforms:_  | _Multiple_          | _Linux_       | _Windows_        |
-| R CMD check   | <%=repos_status()%> | <%=travis()%> | <%=appveyor() %> |
-| Test coverage |                     | <%=covr()%>   |                  |
+| Resource:     | <%=repos()%>        | Travis CI      | Appveyor         |
+| ------------- | ------------------- | -------------- | ---------------- |
+| _Platforms:_  | _Multiple_          | _Linux & OS X_ | _Windows_        |
+| R CMD check   | <%=repos_status()%> | <%=travis()%>  | <%=appveyor() %> |
+| Test coverage |                     | <%=covr()%>    |                  |
