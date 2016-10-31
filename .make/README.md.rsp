@@ -39,7 +39,7 @@ cran <- local({
   available <- NULL
   function() {
     if (is.null(available)) {
-	  repos <- "http://cran.r-project.org"
+	  repos <- "https://cran.r-project.org"
 	  data <- available.packages(contriburl=contrib.url(repos, "source"))
 	  available <<- pkg() %in% rownames(data)
 	}
@@ -51,7 +51,7 @@ bioc <- local({
   available <- NULL
   function() {
     if (is.null(available)) {
-	  repos <- "http://www.bioconductor.org/packages/devel/bioc/"
+	  repos <- "https://www.bioconductor.org/packages/devel/bioc/"
 	  data <- available.packages(contriburl=contrib.url(repos, "source"))
 	  available <<- pkg() %in% rownames(data)
 	}
@@ -73,10 +73,10 @@ repos <- function() {
 
 repos_status <- function() {
   if (cran()) {
-    sprintf('<a href="http://cran.r-project.org/web/checks/check_results_%s.html"><img border="0" src="http://www.r-pkg.org/badges/version/%s" alt="CRAN version"></a>', pkg(), pkg())
+    sprintf('<a href="https://cran.r-project.org/web/checks/check_results_%s.html"><img border="0" src="https://www.r-pkg.org/badges/version/%s" alt="CRAN version"></a>', pkg(), pkg())
   } else if (bioc()) {
     biocURL <- function(type) {
-      sprintf('<a href="http://bioconductor.org/checkResults/%s/bioc-LATEST/%s/"><img border="0" src="http://bioconductor.org/shields/build/%s/bioc/%s.svg" alt="Build status"></a> (%s)', type, pkg(), type, pkg(), type)
+      sprintf('<a href="https://bioconductor.org/checkResults/%s/bioc-LATEST/%s/"><img border="0" src="https://bioconductor.org/shields/build/%s/bioc/%s.svg" alt="Build status"></a> (%s)', type, pkg(), type, pkg(), type)
 	}
     paste(biocURL(c("release", "devel")), collapse="</br>")
   } else {
@@ -119,15 +119,15 @@ covr <- function() {
 } else { %>
 ## Installation
 <% if (cran()) { %>
-R package <%=pkg()%> is available on [CRAN](http://cran.r-project.org/package=<%=pkg()%>) and can be installed in R as:
+R package <%=pkg()%> is available on [CRAN](https://cran.r-project.org/package=<%=pkg()%>) and can be installed in R as:
 ```r
 install.packages('<%=pkg()%>')
 ```
 <% } else if (bioc()) { %>
-R package <%=pkg()%> is available on [Bioconductor](http://www.bioconductor.org/packages/devel/bioc/html/<%=pkg()%>.html) and can be installed in R as:
+R package <%=pkg()%> is available on [Bioconductor](https://www.bioconductor.org/packages/devel/bioc/html/<%=pkg()%>.html) and can be installed in R as:
 
 ```r
-source('http://bioconductor.org/biocLite.R')
+source('https://bioconductor.org/biocLite.R')
 biocLite('<%=pkg()%>')
 ```
 <% } else { %>
