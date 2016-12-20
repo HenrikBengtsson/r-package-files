@@ -84,18 +84,23 @@ repos_status <- function() {
   }
 }
 
-travis <- function() {
+travis <- function(text = FALSE) {
   if (!file.exists(".travis.yml")) return("")
-  sprintf('<a href="https://travis-ci.org/%s"><img src="https://travis-ci.org/%s.svg" alt="Build status"></a>', github_repos(), github_repos())
+  repos <- github_repos()
+  body <- sprintf('<img src="https://travis-ci.org/%s.svg" alt="Build status">', repos)
+  if (text) body <- "Travis CI"
+  sprintf('<a href="https://travis-ci.org/%s">%s</a>', repos, body)
 }
 
-appveyor <- function() {
+appveyor <- function(text = FALSE) {
   if (!file.exists("appveyor.yml")) return("")
   repos <- github_repos()
   repos <- strsplit(repos, split="/")[[1]]
   repos[2] <- gsub("[.]", "-", tolower(repos[2]))
   repos <- paste(repos, collapse="/")
-  sprintf('<a href="https://ci.appveyor.com/project/%s"><img src="https://ci.appveyor.com/api/projects/status/github/%s?svg=true" alt="Build status"></a>', repos, github_repos())
+  body <- sprintf('<img src="https://ci.appveyor.com/api/projects/status/github/%s?svg=true" alt="Build status">', github_repos())
+  if (text) body <- "AppVeyor CI"
+  sprintf('<a href="https://ci.appveyor.com/project/%s">%s</a>', repos, body)
 }
 
 covr <- function() {
@@ -151,6 +156,13 @@ Because of this and because this package also compiles native code, Windows user
 <% } # if (git_branch() != "master") %>
 
 <% } # if (file.exists("INSTALL.md")) %>
+
+
+## Contributions
+
+This repository uses the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model (the [`git flow`](https://github.com/petervanderdoes/gitflow-avh) extension is useful for this).  The [`develop`](https://github.com/<%=github_repos()%>/tree/develop) branch contains the latest contributions and other code that will appear in the next release, and the [`master`](https://github.com/<%=github_repos()%>) branch contains the code of latest release<% if (cran() || bioc()) { %>, which is exactly what is currently on <%=repos()%> (see below)<% } %>.
+
+Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [<%=pkg()%> repository](https://github.com/<%=github_repos()%>).  Your PR should pass `R CMD check --as-cran`, which will also be checked by <%=travis(text = TRUE)%> and <%=appveyor(text = TRUE)%> when the PR is submitted.
 
 
 ## Software status
