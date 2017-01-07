@@ -71,6 +71,14 @@ repos <- function() {
   if (cran()) "CRAN" else if (bioc()) "Bioconductor" else "GitHub"
 }
 
+repos_page <- function() {
+  if (cran()) {
+    sprintf("[CRAN](https://cran.r-project.org/package=%s)", pkg())
+  } else {
+    sprintf("[Bioconductor](https://www.bioconductor.org/packages/devel/bioc/html/%s.html)", pkg())
+  }
+}
+ 
 repos_status <- function() {
   if (cran()) {
     sprintf('<a href="https://cran.r-project.org/web/checks/check_results_%s.html"><img border="0" src="http://www.r-pkg.org/badges/version/%s" alt="CRAN version"></a>', pkg(), pkg())
@@ -124,12 +132,12 @@ covr <- function() {
 } else { %>
 ## Installation
 <% if (cran()) { %>
-R package <%=pkg()%> is available on [CRAN](https://cran.r-project.org/package=<%=pkg()%>) and can be installed in R as:
+R package <%=pkg()%> is available on <%=repos_page()%> and can be installed in R as:
 ```r
 install.packages('<%=pkg()%>')
 ```
 <% } else if (bioc()) { %>
-R package <%=pkg()%> is available on [Bioconductor](https://www.bioconductor.org/packages/devel/bioc/html/<%=pkg()%>.html) and can be installed in R as:
+R package <%=pkg()%> is available on <%=repos_page()%> and can be installed in R as:
 
 ```r
 source('https://bioconductor.org/biocLite.R')
@@ -160,7 +168,7 @@ Because of this and because this package also compiles native code, Windows user
 
 ## Contributions
 
-This repository uses the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model (the [`git flow`](https://github.com/petervanderdoes/gitflow-avh) extension is useful for this).  The [`develop`](https://github.com/<%=github_repos()%>/tree/develop) branch contains the latest contributions and other code that will appear in the next release, and the [`master`](https://github.com/<%=github_repos()%>) branch contains the code of the latest release<% if (cran() || bioc()) { %>, which is exactly what is currently on <%=repos()%> (see below)<% } %>.
+This Git repository uses the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model (the [`git flow`](https://github.com/petervanderdoes/gitflow-avh) extension is useful for this).  The [`develop`](https://github.com/<%=github_repos()%>/tree/develop) branch contains the latest contributions and other code that will appear in the next release, and the [`master`](https://github.com/<%=github_repos()%>) branch contains the code of the latest release<% if (cran() || bioc()) { %>, which is exactly what is currently on <%=repos_page()%><% } %>.
 
 Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [<%=pkg()%> repository](https://github.com/<%=github_repos()%>).  Your PR should pass `R CMD check --as-cran`, which will also be checked by <%=travis(text = TRUE)%> and <%=appveyor(text = TRUE)%> when the PR is submitted.
 
