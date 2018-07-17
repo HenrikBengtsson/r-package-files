@@ -134,21 +134,21 @@ covr <- function() {
 <% if (cran()) { %>
 R package <%=pkg()%> is available on <%=repos_page()%> and can be installed in R as:
 ```r
-install.packages('<%=pkg()%>')
+install.packages("<%=pkg()%>")
 ```
 <% } else if (bioc()) { %>
 R package <%=pkg()%> is available on <%=repos_page()%> and can be installed in R as:
 
 ```r
-source('https://bioconductor.org/biocLite.R')
-biocLite('<%=pkg()%>')
+install.packages("BiocManager")
+BiocManager::install("<%=pkg()%>")
 ```
 <% } else { %>
 R package <%=pkg()%> is only available via [GitHub](https://github.com/<%=github_repos()%>) and can be installed in R as:
 ```r
-remotes::install_github('<%=github_repos()%>')
+remotes::install_github("<%=github_repos()%>")
 <%---
-source('http://callr.org/install#<%=github_repos()%>')
+source("http://callr.org/install#<%=github_repos()%>")
 ---%>
 ```
 <% } %>
@@ -158,9 +158,9 @@ source('http://callr.org/install#<%=github_repos()%>')
 
 To install the pre-release version that is available in Git branch `<%=git_branch()%>` on GitHub, use:
 ```r
-remotes::install_github('<%=github_repos()%>@<%=git_branch()%>')
+remotes::install_github("<%=github_repos()%>@<%=git_branch()%>")
 <%---
-source('http://callr.org/install#<%=github_repos()%>@<%=git_branch()%>')
+source("http://callr.org/install#<%=github_repos()%>@<%=git_branch()%>")
 ---%>
 ```
 This will install the package from source.  <% if (file.exists("src")) { %><%-%>
