@@ -140,7 +140,7 @@ install.packages("<%=pkg()%>")
 R package <%=pkg()%> is available on <%=repos_page()%> and can be installed in R as:
 
 ```r
-install.packages("BiocManager")
+## install.packages("BiocManager")
 BiocManager::install("<%=pkg()%>")
 ```
 <% } else { %>
