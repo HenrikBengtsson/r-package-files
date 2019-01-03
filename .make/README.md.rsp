@@ -181,7 +181,7 @@ Contributing to this package is easy.  Just send a [pull request](https://help.g
 
 ## Software status
 
-| Resource:     | <%=repos()%>        | Travis CI       | Appveyor         |
+| Resource:     | <%=repos()%>        | Travis CI       | AppVeyor         |
 | ------------- | ------------------- | --------------- | ---------------- |
 | _Platforms:_  | _Multiple_          | _Linux & macOS_ | _Windows_        |
 | R CMD check   | <%=repos_status()%> | <%=travis()%>   | <%=appveyor() %> |
