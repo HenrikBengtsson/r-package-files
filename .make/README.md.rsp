@@ -155,19 +155,19 @@ BiocManager::install("<%=pkg()%>")
 <% } else { %>
 R package <%=pkg()%> is only available via [GitHub](https://github.com/<%=github_repos()%>) and can be installed in R as:
 ```r
-remotes::install_github("<%=github_repos()%>")
+remotes::install_github("<%=github_repos()%>", ref="master")
 <%---
 source("http://callr.org/install#<%=github_repos()%>")
 ---%>
 ```
 <% } %>
 
-<% if (git_branch() != "master" && !grepl("^release/", git_branch())) { %>
+<% if (!git_branch() %in% c("master", "main") && !grepl("^release/", git_branch())) { %>
 ### Pre-release version
 
 To install the pre-release version that is available in Git branch `<%=git_branch()%>` on GitHub, use:
 ```r
-remotes::install_github("<%=github_repos()%>@<%=git_branch()%>")
+remotes::install_github("<%=github_repos()%>", ref="<%=git_branch()%>")
 <%---
 source("http://callr.org/install#<%=github_repos()%>@<%=git_branch()%>")
 ---%>
@@ -176,7 +176,7 @@ This will install the package from source.  <% if (file.exists("src")) { %><%-%>
 Because of this and because this package also compiles native code, Windows users need to have [Rtools](https://cran.r-project.org/bin/windows/Rtools/) installed and macOS users need to have [Xcode](https://developer.apple.com/xcode/) installed.
 <% } # if (file.exists("src")) %>
 
-<% } # if (git_branch() != "master") %>
+<% } # if (!git_branch() %in% c("master", "main")) %>
 
 <% } # if (file.exists("INSTALL.md")) %>
 
