@@ -126,72 +126,14 @@ covr <- function() {
   codecov <- any(grepl("covr::codecov", bfr, fixed=TRUE))
   if (codecov) {
     sprintf('<a href="https://codecov.io/gh/%s"><img src="https://codecov.io/gh/%s/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>', github_repos(), github_repos())
-  } else {
-    if (!file.exists(".covr.R")) return("")
-    sprintf('<a href="https://coveralls.io/r/%s"><img src="https://coveralls.io/repos/%s/badge.svg?branch=develop" alt="Coverage Status"/></a>', github_repos(), github_repos())
   }
 }
 %>
 
-<% if (file.exists(file <- "man/figures/logo.png")) { %><img src="<%= file %>" align="right" /><% } %>
+# Contributing to the '<%=pkg()%>' package
 
-# <%=pkg()%>: <%=pkg_title()%>
+This Git repository uses the [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model (the [`git flow`](https://github.com/petervanderdoes/gitflow-avh) extension is useful for this).  The [`develop`](https://github.com/<%=github_repos()%>/tree/develop) branch contains the latest contributions and other code that will appear in the next release, and the [`master`](https://github.com/<%=github_repos()%>) branch contains the code of the latest release<% if (cran() || bioc()) { %>, which is exactly what is currently on <%=repos_page()%><% } %>.
 
-<% if (file.exists("OVERVIEW.md")) { R.rsp::rcat(file="OVERVIEW.md") } %>
+Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [<%=pkg()%> repository](https://github.com/<%=github_repos()%>).  Your PR should pass `R CMD check --as-cran`, which will also be checked by  <%=github(text = TRUE)%>, <%=travis(text = TRUE)%>, and <%=appveyor(text = TRUE)%> when the PR is submitted.
 
-<% if (file.exists("INSTALL.md")) {
-  R.rsp::rcat(file="INSTALL.md")
-} else { %>
-## Installation
-<% if (cran()) { %>
-R package <%=pkg()%> is available on <%=repos_page()%> and can be installed in R as:
-```r
-install.packages("<%=pkg()%>")
-```
-<% } else if (bioc()) { %>
-R package <%=pkg()%> is available on <%=repos_page()%> and can be installed in R as:
-
-```r
-install.packages("BiocManager")
-BiocManager::install("<%=pkg()%>")
-```
-<% } else { %>
-R package <%=pkg()%> is only available via [GitHub](https://github.com/<%=github_repos()%>) and can be installed in R as:
-```r
-remotes::install_github("<%=github_repos()%>", ref="master")
-<%---
-source("http://callr.org/install#<%=github_repos()%>")
----%>
-```
-<% } %>
-
-
-### Pre-release version
-
-To install the pre-release version that is available in Git branch `develop` on GitHub, use:
-```r
-remotes::install_github("<%=github_repos()%>", ref="develop")
-```
-This will install the package from source.  <% if (file.exists("src")) { %><%-%>
-Because of this and because this package also compiles native code, Windows users need to have [Rtools](https://cran.r-project.org/bin/windows/Rtools/) installed and macOS users need to have [Xcode](https://developer.apple.com/xcode/) installed.
-<% } # if (file.exists("src")) %>
-<% } # if (file.exists("INSTALL.md")) %>
-
-
-
-<div id="badges"><!-- pkgdown markup -->
-
-## Contributing
-
-To contribute to this package, please see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-
-## Software status
-
-| Resource      | <%=repos()%>        | GitHub Actions      | Travis CI       | AppVeyor CI      |
-| ------------- | ------------------- | ------------------- | --------------- | ---------------- |
-| _Platforms:_  | _Multiple_          | _Multiple_          | _Linux & macOS_ | _Windows_        |
-| R CMD check   | <%=repos_status()%> | <%=github()%>       | <%=travis()%>   | <%=appveyor() %> |
-| Test coverage |                     |                     | <%=covr()%>     |                  |
-
-</div>
+We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) of Contributor Covenant.
