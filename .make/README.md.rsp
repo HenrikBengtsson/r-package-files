@@ -110,9 +110,12 @@ repos_status <- function() {
     a("https://CRAN.R-project.org/web/checks/check_results_%s.html", pkg(), body = img("https://www.r-pkg.org/badges/version/%s", pkg(), alt="CRAN check status"))
   } else if (bioc()) {
     biocURL <- function(type) {
-      a("https://bioconductor.org/checkResults/%s/bioc-LATEST/%s/", type, pkg(), body = img("https://bioconductor.org/shields/build/%s/bioc/%s.svg", type, pkg(), alt="Bioconductor build status"))
+      a("https://bioconductor.org/checkResults/%s/bioc-LATEST/%s/", type, pkg(), body = img("https://bioconductor.org/shields/build/%s/bioc/%s.svg", type, pkg(), alt=sprintf("Bioconductor %s build status", type)))
     }
-    paste(biocURL(c("release", "devel")), collapse="</br>")
+    biocSince <- function() {
+      img("https://bioconductor.org/shields/years-in-bioc/%s.svg", pkg(), alt="Bioconductor since badge")
+    }
+    paste(c(biocURL(c("release", "devel")), biocSince()), collapse=" ")
   } else {
     ""
   }
