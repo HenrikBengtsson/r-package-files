@@ -113,9 +113,9 @@ repos_status <- function() {
       a("https://bioconductor.org/checkResults/%s/bioc-LATEST/%s/", type, pkg(), body = img("https://bioconductor.org/shields/build/%s/bioc/%s.svg", type, pkg(), alt=sprintf("Bioconductor %s build status", type)))
     }
     biocSince <- function() {
-      img("https://bioconductor.org/shields/years-in-bioc/%s.svg", pkg(), alt="Bioconductor since badge")
+      a("https://bioconductor.org/packages/%s/", pkg(), body = img("https://bioconductor.org/shields/years-in-bioc/%s.svg", pkg(), alt="Bioconductor since badge"))
     }
-    paste(c(biocURL(c("release", "devel")), biocSince()), collapse=" ")
+    paste(c(biocSince(), biocURL(c("release", "devel"))), collapse=" ")
   } else {
     ""
   }
