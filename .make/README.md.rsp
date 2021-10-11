@@ -139,7 +139,7 @@ github_revdepcheck_top <- function(name = "revdepcheck-top", text = FALSE) {
   a("https://github.com/%s/actions?query=workflow%%3A%s", repos, name, body=body)
 }
 
-github_future.tests <- function(name = "future.tests", text = FALSE) {
+github_future.tests <- function(name = "future_tests", text = FALSE) {
   if (!file.exists(sprintf(".github/workflows/%s.yaml", name))) return("")
   repos <- github_repos()
   body <- img("https://github.com/%s/actions/workflows/%s.yaml/badge.svg?branch=develop", github_repos(), name, alt="future.tests checks status")
